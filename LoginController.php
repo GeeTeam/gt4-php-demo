@@ -6,10 +6,10 @@ $captcha_key = "b09a7aafbfd83f73b35a9b530d0337bf";
 $api_server = "http://gcaptcha4.geetest.com";
 
 // 2.获取用户验证后前端传过来的验证流水号参数
-$lot_number = $_GET['lot_number'];
-$captcha_output = $_GET['captcha_output'];
-$pass_token = $_GET['pass_token'];
-$gen_time = $_GET['gen_time'];
+$lot_number = $_GET['lotNumber'];
+$captcha_output = $_GET['captchaOutput'];
+$pass_token = $_GET['passToken'];
+$gen_time = $_GET['genTime'];
 
 // 3.生成签名
 // 生成签名使用标准的hmac算法，使用用户当前完成验证的流水号lot_number作为原始消息message，使用客户验证私钥作为key
