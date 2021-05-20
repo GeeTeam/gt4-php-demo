@@ -30,17 +30,10 @@ $res = post_request($url,$query);
 $obj = json_decode($res,true);
 
 // 5.根据极验返回的用户验证状态, 网站主进行自己的业务逻辑
+echo sprintf('{"login":"%s","reason":"%s"}', $obj['result'], $obj['reason']);
+
 // 注意处理接口异常情况，当请求极验二次验证接口异常时做出相应异常处理
 // 保证不会因为接口请求超时或服务未响应而阻碍业务流程
-if ($obj['result']=="success"){
-    echo sprintf('{"login":"success","reason":"%s"}', $obj['reason']);
-} elseif ($obj['result']=="fail"){
-    echo sprintf('{"login":"fail","reason":"%s"}', $obj['reason']);
-} else {
-    echo '{"login":"success","reason":"request geetest api fail"}';
-}
-
-
 function post_request($url, $postdata) {
     $data = http_build_query($postdata);
 
@@ -54,8 +47,15 @@ function post_request($url, $postdata) {
     );
     $context = stream_context_create($options);
     $result    = file_get_contents($url, false, $context);
-
-    return $result;
+    if($http_response_header[0] != 'HTTP/1.1 200 OK'){
+        $result = array(
+            "result" => "success",
+            "reason" => "request geetest api fail"
+        );
+        return json_encode($result);
+    }else{
+        return $result;
+    }
 }
 
 ?>
