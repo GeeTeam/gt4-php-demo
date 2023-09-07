@@ -57,7 +57,9 @@ function post_request($url, $postdata) {
     );
     $context = stream_context_create($options);
     $result    = file_get_contents($url, false, $context);
-    if($http_response_header[0] != 'HTTP/1.1 200 OK'){
+    preg_match('/([0-9])\d+/',$http_response_header[0],$matches);
+    $responsecode = intval($matches[0]);
+    if($responsecode != 200){
         $result = array(
             "result" => "success",
             "reason" => "request geetest api fail"
